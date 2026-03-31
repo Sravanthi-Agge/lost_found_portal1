@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import ItemCard from '../components/ItemCard';
 import { adminAPI } from '../services/api';
 
 const AdminPanel = () => {

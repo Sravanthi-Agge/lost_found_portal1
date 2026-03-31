@@ -1,16 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 const ItemCard = ({ item, onDelete, showActions = false }) => {
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'PENDING': return 'text-warning';
-      case 'MATCHED': return 'text-info';
-      case 'RETURNED': return 'text-success';
-      default: return 'text-secondary';
-    }
-  };
-
   const getStatusBadge = (status) => {
     switch (status) {
       case 'PENDING': return 'bg-warning';

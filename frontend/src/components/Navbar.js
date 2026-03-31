@@ -49,9 +49,9 @@ const Navbar = () => {
             {user ? (
               <>
                 <li className="nav-item dropdown">
-                  <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                  <button className="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown">
                     👤 {user.name}
-                  </a>
+                  </button>
                   <ul className="dropdown-menu">
                     <li><span className="dropdown-item-text">Role: {user.role}</span></li>
                     <li><hr className="dropdown-divider" /></li>
