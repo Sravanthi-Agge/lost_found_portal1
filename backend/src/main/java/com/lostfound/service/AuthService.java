@@ -7,12 +7,6 @@ import com.lostfound.model.User;
 import com.lostfound.repository.UserRepository;
 import com.lostfound.config.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,16 +16,7 @@ public class AuthService {
     private UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
     private JwtUtil jwtUtil;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
 
     public AuthResponse register(RegisterRequest request) {
         System.out.println("Registering user: " + request.getEmail());
@@ -44,7 +29,7 @@ public class AuthService {
         User user = new User();
         user.setName(request.getName());
         user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPassword(request.getPassword()); // Plain text for now
         user.setRole(User.Role.USER);
 
         user = userRepository.save(user);
@@ -56,13 +41,15 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
-        Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
-        );
-
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        User user = userRepository.findByEmail(userDetails.getUsername())
+        System.out.println("Login attempt for: " + request.getEmail());
+        
+        User user = userRepository.findByEmail(request.getEmail())
             .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Simple password check (plain text for now)
+        if (!request.getPassword().equals(user.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
+        }
 
         String token = jwtUtil.generateToken(user.getEmail(), user.getRole().name());
 
