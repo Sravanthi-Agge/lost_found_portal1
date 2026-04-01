@@ -1,0 +1,16 @@
+{
+  "name": "lost-found-portal",
+  "version": "1.0.0",
+  "description": "Lost and Found Smart Portal - Full Stack Application",
+  "scripts": {
+    "build": "cd frontend && npm run build",
+    "start": "cd frontend && npm start",
+    "install": "cd frontend && npm install"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": ["react", "spring-boot", "mysql", "lost-and-found"],
+  "author": "Sravanthi Agge",
+  "license": "MIT"
+}

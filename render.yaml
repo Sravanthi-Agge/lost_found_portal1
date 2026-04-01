@@ -1,0 +1,33 @@
+services:
+  # Frontend Service (if you want to deploy frontend on Render too)
+  - type: web
+    name: lost-found-frontend
+    env: static
+    buildCommand: "cd frontend && npm run build"
+    staticPublishPath: ./frontend/build
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: REACT_APP_API_URL
+        value: https://lost-found-backend.onrender.com/api
+
+  # Backend Service - Spring Boot
+  - type: web
+    name: lost-found-backend
+    env: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /api/items/all
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:mysql://containers-us-west-19.railway.app:6969/railway
+      - key: SPRING_DATASOURCE_USERNAME
+        value: root
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: your-generated-password
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
+      - key: SPRING_JPA_DATABASE_PLATFORM
+        value: org.hibernate.dialect.MySQLDialect
+      - key: PORT
+        value: 8080
