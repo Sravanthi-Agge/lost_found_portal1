@@ -16,6 +16,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     
     List<Item> findByStatus(Item.ItemStatus status);
     
+    List<Item> findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String title, String description);
+    
     @Query("SELECT i FROM Item i WHERE " +
            "(LOWER(i.title) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
            "LOWER(i.description) LIKE LOWER(CONCAT('%', :keyword, '%'))) AND " +

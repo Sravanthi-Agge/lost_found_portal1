@@ -140,4 +140,13 @@ public class ItemService {
         item.setStatus(status);
         return itemRepository.save(item);
     }
+
+    public List<Item> searchItems(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return itemRepository.findAll();
+        }
+        
+        String searchKeyword = keyword.trim().toLowerCase();
+        return itemRepository.findByTitleContainingIgnoreCaseOrDescriptionContainingIgnoreCase(searchKeyword, searchKeyword);
+    }
 }
