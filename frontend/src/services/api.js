@@ -32,7 +32,17 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.error('API Error:', error.response?.status, error.response?.data || error.message);
+    console.error('API Error Details:', {
+      message: error.message,
+      status: error.response?.status,
+      data: error.response?.data,
+      config: {
+        method: error.config?.method?.toUpperCase(),
+        url: error.config?.url,
+        baseURL: error.config?.baseURL,
+        data: error.config?.data
+      }
+    });
     return Promise.reject(error);
   }
 );
@@ -48,6 +58,18 @@ export const itemAPI = {
   add: (itemData) => api.post('/items/add', itemData),
   delete: (id) => api.delete(`/items/${id}`),
   getMyItems: () => api.get('/items/all'), // Temporarily use all items
+  
+  // Test method without authentication
+  testAdd: (itemData) => {
+    const testApi = axios.create({
+      baseURL: 'http://localhost:8080/api',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    return testApi.post('/items/add', itemData);
+  }
 };
 
 export const adminAPI = {
